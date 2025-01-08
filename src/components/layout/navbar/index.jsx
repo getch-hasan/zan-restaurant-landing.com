@@ -20,8 +20,8 @@ const Navbar = () => {
 
   return (
     <div className="w-full z-10 bg-[#f8eded]">
-      <nav className="py-3 flex container-custom mx-auto justify-between items-center">
-        <Link href={'/'} className="flex items-center gap-2">
+      <nav className="py-3 flex container-custom mx-auto justify-between items-center font-openSans">
+        <Link href={'/'} className="flex items-center gap-2"> 
           <img
             className="h-14 w-14 ml-4 rounded-full"
             src="/logo.webp"
@@ -34,7 +34,7 @@ const Navbar = () => {
         >
           <FaBars />
         </button>
-        <div className="hidden md:flex items-center gap-10">
+        <div className="hidden lg:flex items-center gap-10">
           {navList.map((item, index) => (
             <Link
               aria-label={item.name}

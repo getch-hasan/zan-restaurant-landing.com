@@ -22,7 +22,7 @@ const Cart = () => {
      
     <div className="p-5">
     <div className="text-center ">
-        <h1 className="font-bold">Pasta</h1>
+        <h1 className="font-bold font-bubblegum">Pasta</h1>
        
             {/* Ratings */}
             <div className="flex justify-center py-2">
@@ -39,11 +39,11 @@ const Cart = () => {
               )}
             </div>
             
-        <p className="text-xs py-2">
+        <p className="text-xs py-2 font-openSans">
           Pasta is a type of food typical nade from an unleavended dough
         </p>
       </div>
-      <div className="flex justify-between items-center mt-5 ">
+      <div className="flex justify-between items-center mt-5 font-openSans ">
         <span className="text-base font-bold">$36.00</span>
         <button className="border-2 border-primary text-sm font-bold  px-4 py-1 rounded-full hover:bg-primary">Add To cart</button>
       </div>

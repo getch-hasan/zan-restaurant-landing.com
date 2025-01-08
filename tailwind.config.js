@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        openSans: ['"Open Sans"', 'sans-serif'],
+        bubblegum: ['"Bubblegum Sans"', 'cursive'],
+      },
       colors: {
         primary: '#a5dd61',
         secondary:'#FFAA00'
