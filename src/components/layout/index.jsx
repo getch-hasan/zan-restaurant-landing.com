@@ -1,3 +1,4 @@
+import Foooter from "./Footer"
 import Navbar from "./navbar"
 
 export const LayoutPageWrapper = ({ children }) => {
@@ -5,6 +6,7 @@ export const LayoutPageWrapper = ({ children }) => {
         <div>
             <Navbar/>
             <main>{children}</main>
+            <Foooter/>
         </div>
     )
 }
