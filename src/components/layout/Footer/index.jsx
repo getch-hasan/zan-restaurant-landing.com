@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import {
@@ -13,7 +14,15 @@ import {
 
 const Foooter = () => {
   return (
-    <footer className="] pt-10 mt-5">
+    <footer className="border-t-4 container-custom" >
+        <div className="]  mt-5 ">
+        <div className="flex justify-start items-center border-b-2 border-b-gray-400 pb-5 mb-10 ">
+            <div>
+                <Image height={400} width={400} src={'/logo.webp'} className="w-20 "/>
+            </div>
+            <h1 className="text-2xl">Bites</h1>
+        </div>
+        
       <div className="grid justify-center grid-cols-1 md:grid-cols-2 lg:grid-cols-5 container mx-auto">
         <div className="flex justify-center">
           <div className="text-start">
@@ -37,7 +46,7 @@ const Foooter = () => {
                     <FaFacebookF className=" border-black border rounded-full  p-2  hover:bg-primary hover:border-none" />
                   </Link>
                   <Link href="https://linkedin.com">
-                    <FaLinkedinIn className=" border-black border rounded-full  p-2 hover:bg-primary hover:border-none" />
+                    <FaTwitter className=" border-black border rounded-full  p-2 hover:bg-primary hover:border-none" />
                   </Link>
                   <Link href="https://instagram.com">
                     <FaInstagramSquare className=" border-black border rounded-full  p-2 hover:bg-primary hover:border-none" />
@@ -156,27 +165,8 @@ const Foooter = () => {
         </div>
       </div>
 
-      <div className="bg-white">
-        <div className="container flex mx-auto items-center justify-between">
-          <p className="text-sm text-[#AAAAAA] py-4">
-            &copy; {new Date().getFullYear()} zanmart - All rights Reserved.
-          </p>
-          <p className="flex text-sm gap-2 text-[#AAAAAA]">
-            <Link href="https://facebook.com">
-              <FaFacebookF />
-            </Link>
-            <Link href="https://linkedin.com">
-              <FaLinkedinIn />
-            </Link>
-            <Link href="https://instagram.com">
-              <FaInstagramSquare />
-            </Link>
-            <Link href="https://twitter.com">
-              <FaTwitter />
-            </Link>
-          </p>
-        </div>
-      </div>
+      
+    </div>
     </footer>
   );
 };
