@@ -16,11 +16,11 @@ const Foooter = () => {
   return (
     <footer className="border-t-4 container-custom" >
         <div className="]  mt-5 ">
-        <div className="flex justify-start items-center border-b-2 border-b-gray-400 pb-5 mb-10 ">
+        <div className="flex justify-start items-center border-b-2 border-b-gray-400 pb-5 gap-4  mb-10 ">
             <div>
                 <Image height={400} width={400} src={'/logo.webp'} className="w-20 "/>
             </div>
-            <h1 className="text-2xl">Bites</h1>
+            <h1 className="text-2xl font-semibold">Bites</h1>
         </div>
         
       <div className="grid justify-center grid-cols-1 md:grid-cols-2 lg:grid-cols-5 container mx-auto">
