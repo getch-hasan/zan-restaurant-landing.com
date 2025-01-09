@@ -66,7 +66,7 @@ const Navbar = () => {
       </nav>
 
       <div
-        className={`fixed inset-0 z-40 flex md:hidden ${
+        className={`fixed inset-0 z-40 flex lg:hidden ${
           isDrawerOpen ? "opacity-100 visible" : "opacity-0 invisible "
         } transition-opacity duration-700 ease-in-out`}
       >
