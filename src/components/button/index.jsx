@@ -4,7 +4,7 @@ export const PrimaryButton = (props) => {
     return <div className="flex ">
         <Link href={`${props?.link}`}
 
-type="submit" class="flex items-center rounded-full text-sm bg-primary  px-5 py-2  " disabled={props.loading} >
+type="submit" class="flex items-center rounded-full text-sm bg-primary  px-5 py-2 shadow-xl " disabled={props.loading} >
 
 {props.loading ?
 <svg class={`${props.loading ? 'animate-spin' : "" } mr-3 h-5 w-5  text-white`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

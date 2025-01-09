@@ -27,7 +27,7 @@ export default function Home() {
             tempore quo assumenda! Quisquam, natus.
           </p>
           <div className="flex  gap-5 pt-10">
-            <PrimaryButton name="Explore Food" link='menu' />
+            <PrimaryButton name="Explore Food" link="menu" />
             <button className="px-5 py-2 border border-primary flex justify-center items-center gap-2 rounded-full">
               <FaSearch /> Search
             </button>
@@ -83,13 +83,13 @@ export default function Home() {
           <div className="flex gap-4">
             <button
               onClick={() => swiperRef.current?.slidePrev()}
-              className="border border-primary rounded-full p-2 hover:bg-primary"
+              className="border border-primary rounded-full p-2 hover:bg-primary hover:shadow-xl"
             >
               <FaArrowLeft />
             </button>
             <button
               onClick={() => swiperRef.current?.slideNext()}
-              className="border border-primary rounded-full p-2 hover:bg-primary"
+              className="border border-primary rounded-full p-2 hover:bg-primary hover:shadow-xl"
             >
               <FaArrowRight />
             </button>
@@ -128,10 +128,17 @@ export default function Home() {
       {/* ser vice section */}
       <section className="flex justify-around items-center py-20 flex-col md:flex-row gap-8 ">
         <div className="lg:w-1/2 w-full flex justify-center ">
-          <Image height={400} width={400} src="/images/chef.webp" className="rounded-3xl" />
+          <Image
+            height={400}
+            width={400}
+            src="/images/chef.webp"
+            className="rounded-3xl"
+          />
         </div>
         <div className="lg:w-1/2 w-full">
-          <h1 className="text-5xl font-bubblegum pb-5">We have Multiple Services</h1>
+          <h1 className="text-5xl font-bubblegum pb-5">
+            We have Multiple Services
+          </h1>
           <p className="text-sm font-openSans ">
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ea
             voluptatibus aut quis velit quidem. Ex facilis voluptas
@@ -139,42 +146,105 @@ export default function Home() {
             Nobis maiores minima officiis dolor.
           </p>
           <div>
-          <div className="grid grid-cols-2 gap-4 justify-between mt-10 pb-10">
-         {
-         serviceData?.map((data, index)=>   <div key={data.name} className="flex items-center gap-4 "> {data?.logo}
-            <p className="text-sm font-bubblegum font-semibold ">{data?.name}</p></div>)
-         }
-          </div>
-          <PrimaryButton name={'About Us'} link='/about-us'/>
+            <div className="grid grid-cols-2 gap-4 justify-between mt-10 pb-10">
+              {serviceData?.map((data, index) => (
+                <div key={data.name} className="flex items-center gap-4 ">
+                  {" "}
+                  {data?.logo}
+                  <p className="text-sm font-bubblegum font-semibold ">
+                    {data?.name}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <PrimaryButton name={"About Us"} link="/about-us" />
           </div>
         </div>
       </section>
       {/* Reservation sectoion */}
-      <section className=" flex  flex-col lg:flex-row justify-center items-center  ">
+      <section className=" flex  flex-col lg:flex-row justify-center items-center gap-4 ">
         <div className="py-5 w-full lg:w-1/2">
           <h1 className="text-5xl font-bubblegum text-bold">
-           Do You Have Any Dinner Plan Today? Resrve Your Table Today
+            Do You Have Any Dinner Plan Today? Resrve Your Table Today
           </h1>
           <p className="pt-10 font-openSans">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque
             temporibus asperiores excepturi sapiente ipsa hic! Voluptas, nobis.
-            Soluta iste labore ratione cumque necessitatibus. 
+            Soluta iste labore ratione cumque necessitatibus.
           </p>
           <div className="flex  gap-5 pt-10">
-            <PrimaryButton name="Make Reservation" link='reserve' />
-            
+            <PrimaryButton name="Make Reservation" link="reserve" />
           </div>
         </div>
         <div className="py-10 flex justify-center">
-  <Image
-    className="rounded-full h-auto w-full lg:h-[400px] lg:w-[400px] object-cover"
-    height={500}
-    width={500}
-    src={"/images/burger.webp"}
-    alt="hero"
-  />
-</div>
+          <Image
+            className="rounded-full h-auto w-full lg:h-[400px] lg:w-[400px] object-cover"
+            height={500}
+            width={500}
+            src={"/images/burger.webp"}
+            alt="hero"
+          />
+        </div>
+      </section>
+      <section className="py-5">
+        <div className="flex justify-between items-center py-10">
+          <h1 className="text-4xl font-bold font-bubblegum">Meet Our Chefs</h1>
+          <div className="flex gap-4">
+            <button
+              onClick={() => swiperRef.current?.slidePrev()}
+              className="border border-primary rounded-full p-2 hover:bg-primary hover:shadow-xl"
+            >
+              <FaArrowLeft />
+            </button>
+            <button
+              onClick={() => swiperRef.current?.slideNext()}
+              className="border border-primary rounded-full p-2 hover:bg-primary hover:shadow-xl"
+            >
+              <FaArrowRight />
+            </button>
+          </div>
+        </div>
+        <Swiper
+          className="w-full mx-auto"
+          spaceBetween={20}
+          autoplay={{
+            delay: 1000,
+            disableOnInteraction: false,
+          }}
+          loop={true}
+          speed={2000}
+          modules={[Autoplay]} // Include Navigation in modules
+          breakpoints={{
+            640: {
+              slidesPerView: 1,
+            },
+            768: {
+              slidesPerView: 3,
+            },
+            1024: {
+              slidesPerView: 4,
+            },
+          }}
+          onSwiper={(swiper) => (swiperRef.current = swiper)}
+        >
+          {[...Array(5)].map((_, index) => (
+            <SwiperSlide key={index}>
+              <div className=" bg-white rounded-xl p-5">
+                <div className="flex justify-center items-center ">
+                  <Image
+                    height={500}
+                    width={300}
+                    
+                    src={'/images/chef.webp'}
+                    className="rounded-xl"
+                  />
+                </div>
+                <p className="text-center  font-bubblegum leading-5 text-xl mt-4">MR. Chef</p>
 
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </section>
     </div>
   );
