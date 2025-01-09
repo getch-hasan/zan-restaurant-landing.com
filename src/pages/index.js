@@ -8,11 +8,13 @@ import { Autoplay } from "swiper/modules"; // Import Navigation from 'swiper/mod
 import { useRef } from "react";
 import { PrimaryButton } from "@/components/button";
 import Image from "next/image";
-
+import { MdBookOnline } from "react-icons/md";
+import { serviceData } from "@/components/data";
 export default function Home() {
   const swiperRef = useRef(null);
   return (
     <div className="container-custom">
+      {/* hero section */}
       <section className=" flex  flex-col-reverse lg:flex-row justify-around items-center  ">
         <div className="py-5 w-full lg:w-1/2">
           <h1 className="text-5xl font-bubblegum text-bold">
@@ -25,44 +27,54 @@ export default function Home() {
             tempore quo assumenda! Quisquam, natus.
           </p>
           <div className="flex  gap-5 pt-10">
-            <PrimaryButton name='Explore Food'/>
-            <button className="px-5 py-2 border border-primary flex justify-center items-center gap-2 rounded-full"><FaSearch/> Search</button>
+            <PrimaryButton name="Explore Food" link='menu' />
+            <button className="px-5 py-2 border border-primary flex justify-center items-center gap-2 rounded-full">
+              <FaSearch /> Search
+            </button>
           </div>
         </div>
         <div className="py-10 relative">
-  <Image className="rounded-full hidden lg:flex lg:w-3/4  h-full lg:h-[400px] w-auto" height={500} width={500} src={'/images/burger.webp'} alt="hero"/>
-  
-  <div className="absolute hidden top-1/2 h-96 transform -translate-y-1/2 right-0 lg:flex  flex-col gap-0 overflow-hidden">
-    <Swiper
-      spaceBetween={10}
-      direction="vertical"
-      autoplay={{
-        delay: 1000,
-        disableOnInteraction: false,
-      }}
-      loop={true}
-      speed={2000}
-      modules={[Autoplay]}
-      breakpoints={{
-        640: {
-          slidesPerView: 4,
-        },
-      
-      }}
-    >
-      {
-        [...Array(6)].map((_, index) => (
-          <SwiperSlide key={index}>
-            <button className="flex rounded-full gap-1 items-center bg-white hover:bg-primary shadow-xl px-4 py-1">
-              <Image className="rounded-full" height={50} width={50} src={'/images/burger.webp'} />
-              Dishes
-            </button>
-          </SwiperSlide>
-        ))
-      }
-    </Swiper>
-  </div>
-</div>
+          <Image
+            className="rounded-full hidden lg:flex lg:w-3/4  h-full lg:h-[400px] w-auto"
+            height={500}
+            width={500}
+            src={"/images/burger.webp"}
+            alt="hero"
+          />
+
+          <div className="absolute hidden top-1/2 h-96 transform -translate-y-1/2 right-0 lg:flex  flex-col gap-0 overflow-hidden">
+            <Swiper
+              spaceBetween={10}
+              direction="vertical"
+              autoplay={{
+                delay: 1000,
+                disableOnInteraction: false,
+              }}
+              loop={true}
+              speed={2000}
+              modules={[Autoplay]}
+              breakpoints={{
+                640: {
+                  slidesPerView: 4,
+                },
+              }}
+            >
+              {[...Array(6)].map((_, index) => (
+                <SwiperSlide key={index}>
+                  <button className="flex rounded-full gap-1 items-center bg-white hover:bg-primary shadow-xl px-4 py-1">
+                    <Image
+                      className="rounded-full"
+                      height={50}
+                      width={50}
+                      src={"/images/burger.webp"}
+                    />
+                    Dishes
+                  </button>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
       </section>
       {/* Populer dishesh seciton start from hare */}
       <section>
@@ -112,6 +124,57 @@ export default function Home() {
             </SwiperSlide>
           ))}
         </Swiper>
+      </section>
+      {/* ser vice section */}
+      <section className="flex justify-around items-center py-20 flex-col md:flex-row gap-8 ">
+        <div className="lg:w-1/2 w-full flex justify-center ">
+          <Image height={400} width={400} src="/images/chef.webp" className="rounded-3xl" />
+        </div>
+        <div className="lg:w-1/2 w-full">
+          <h1 className="text-5xl font-bubblegum pb-5">We have Multiple Services</h1>
+          <p className="text-sm font-openSans ">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ea
+            voluptatibus aut quis velit quidem. Ex facilis voluptas
+            reprehenderit quasi consectetur placeat natus. Non, perferendis ut?
+            Nobis maiores minima officiis dolor.
+          </p>
+          <div>
+          <div className="grid grid-cols-2 gap-4 justify-between mt-10 pb-10">
+         {
+         serviceData?.map((data, index)=>   <div key={data.name} className="flex items-center gap-4 "> {data?.logo}
+            <p className="text-sm font-bubblegum font-semibold ">{data?.name}</p></div>)
+         }
+          </div>
+          <PrimaryButton name={'About Us'} link='/about-us'/>
+          </div>
+        </div>
+      </section>
+      {/* Reservation sectoion */}
+      <section className=" flex  flex-col lg:flex-row justify-center items-center  ">
+        <div className="py-5 w-full lg:w-1/2">
+          <h1 className="text-5xl font-bubblegum text-bold">
+           Do You Have Any Dinner Plan Today? Resrve Your Table Today
+          </h1>
+          <p className="pt-10 font-openSans">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque
+            temporibus asperiores excepturi sapiente ipsa hic! Voluptas, nobis.
+            Soluta iste labore ratione cumque necessitatibus. 
+          </p>
+          <div className="flex  gap-5 pt-10">
+            <PrimaryButton name="Make Reservation" link='reserve' />
+            
+          </div>
+        </div>
+        <div className="py-10 flex justify-center">
+  <Image
+    className="rounded-full h-auto w-full lg:h-[400px] lg:w-[400px] object-cover"
+    height={500}
+    width={500}
+    src={"/images/burger.webp"}
+    alt="hero"
+  />
+</div>
+
       </section>
     </div>
   );
