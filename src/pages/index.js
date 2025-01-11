@@ -464,7 +464,7 @@ export default function Home() {
                 key={currentImageIndex}
                 height={400}
                 width={300}
-                className="object-cover rounded w-full h-40"
+                className="object-cover rounded w-full h-60"
                 src={images[currentImageIndex]}
                 alt={`Image ${currentImageIndex + 1}`}
               />
