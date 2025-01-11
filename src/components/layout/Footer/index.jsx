@@ -25,8 +25,8 @@ const Foooter = () => {
           <h1 className="text-2xl font-semibold font-bubblegum ">Bites</h1>
         </div>
 
-        <div className="grid justify-center grid-cols-1 md:grid-cols-2 lg:grid-cols-5 container mx-auto">
-          <div className="flex justify-center">
+        <div className="grid justify-center grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 container mx-auto">
+          <div className="flex md:justify-center justify-start ">
             <div className="text-start">
               <h1 className="text-xl font-semibold py-2 font-bubblegum ">
                 Subscribe Our <br /> Newsletter
@@ -64,7 +64,7 @@ const Foooter = () => {
             </div>
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex md:justify-center justify-start">
             <div className="text-start">
               <h1 className=" leading-[14px] pb-8 text-xl font-semibold font-bubblegum text-black">
                 Service
@@ -87,7 +87,7 @@ const Foooter = () => {
             </div>
           </div>
 
-          <div className="flex justify-center ">
+          <div className="flex md:justify-center justify-start ">
             <div className="text-start">
               <h1 className="text-xl font-semibold leading-[14px] pb-8 font-bubblegum  text-black">
                 Quick Links
@@ -131,7 +131,7 @@ const Foooter = () => {
             </div>
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex md:justify-center justify-start">
             <div className="text-start">
               <h1 className="text-xl font-semibold leading-[14px] pb-8 font-bubblegum   text-black">
                 About
@@ -153,7 +153,7 @@ const Foooter = () => {
               </p>
             </div>
           </div>
-          <div className="flex justify-center">
+          <div className="flex md:justify-center justify-start">
             <div className="text-start">
               <h1 className=" leading-[14px] pb-8 text-xl font-semibold font-bubblegum  text-black">
                 Help
