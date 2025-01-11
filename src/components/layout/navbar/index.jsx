@@ -21,12 +21,13 @@ const Navbar = () => {
   return (
     <div className="w-full z-10 bg-[#f8eded]">
       <nav className="py-3 flex container-custom mx-auto justify-between items-center font-openSans">
-        <Link href={'/'} className="flex items-center gap-2"> 
+        <Link href={'/'} className="flex items-center md:gap-4 gap-1 "> 
           <img
             className="h-14 w-14 ml-4 rounded-full"
             src="/logo.webp"
             alt="Logo"
           />
+          <h1 className="font-bubblegum text-2xl">Bites</h1>
         </Link>
         <button
           onClick={toggleDrawer}

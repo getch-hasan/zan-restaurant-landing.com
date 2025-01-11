@@ -3,11 +3,11 @@ import Link from "next/link";
 import React from "react";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
-const Cart = () => {
+const Cart = ({handleModal}) => {
     const rating=5
   return (
-    <Link
-      href={`/product-details`}
+    <div
+
       className="w-full h-fit rounded-lg bg-white  flex flex-col justify-between "
     >
       <div className="overflow-hidden w-full  rounded-t-[15px] ">
@@ -45,10 +45,10 @@ const Cart = () => {
       </div>
       <div className="flex justify-between items-center mt-5 font-openSans ">
         <span className="text-base font-bold">$36.00</span>
-        <button className="border-2 border-primary text-sm font-bold  px-4 py-1 rounded-full hover:bg-primary">Add To cart</button>
+        <button onClick={()=>handleModal()} className="border-2 border-primary text-sm font-bold  px-4 py-1 rounded-full hover:bg-primary">View More</button>
       </div>
     </div>
-    </Link>
+    </div>
   );
 };
 
