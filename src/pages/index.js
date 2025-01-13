@@ -1,11 +1,10 @@
 import Cart from "@/components/cart";
 import {
-  FaArrowCircleDown,
   FaArrowLeft,
   FaArrowRight,
   FaChevronDown,
   FaSearch,
-} from "react-icons/fa";
+}from "react-icons/fa";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -14,16 +13,18 @@ import { Autoplay } from "swiper/modules"; // Import Navigation from 'swiper/mod
 import { useRef, useState } from "react";
 import { PrimaryButton } from "@/components/button";
 import Image from "next/image";
-import { MdBookOnline } from "react-icons/md";
 import { serviceData } from "@/components/data";
 export default function Home() {
   const swiperRef = useRef(null);
-  const customerRef = useRef(null);
+  const swiperRef3 = useRef(null);
+  const swiperRef1 = useRef(null);
+  const swiperRef2 = useRef(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("Select Item"); // Track selected item
   const [modal, setModal] = useState(false);
   const images = ['/images/burger.webp', '/images/food.webp', '/images/drink.webp', '/images/dessert.webp'];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
 
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -43,9 +44,9 @@ export default function Home() {
     console.log("clicked");
   };
   return (
-    <div className="container-custom">
+    <div className="container-custom mx-auto pt-16">
       {/* hero section */}
-      <section className=" flex  flex-col lg:flex-row justify-between items-center  ">
+      <section id="#" className="flex  flex-col lg:flex-row justify-between items-center  ">
         <div className="py-5 w-full lg:w-1/2">
           <h1 className="text-5xl font-bubblegum text-bold">
             We serve the test You love 😍
@@ -57,7 +58,7 @@ export default function Home() {
             tempore quo assumenda! Quisquam, natus.
           </p>
           <div className="flex  gap-5 pt-10">
-            <PrimaryButton name="Explore Food" link="menu" />
+            <PrimaryButton name="Explore Food" link="#manu" />
             <button className="px-5 py-2 border border-primary flex justify-center items-center gap-2 rounded-full">
               <FaSearch /> Search
             </button>
@@ -111,18 +112,18 @@ export default function Home() {
         </div>
       </section>
       {/* Populer dishesh seciton start from hare */}
-      <section>
+      <section className=" pt-16"  >
         <div className="flex justify-between items-center py-10">
           <h1 className="text-4xl font-bold font-bubblegum">Popular Dishes</h1>
           <div className="lg:flex hidden gap-4">
             <button
-              onClick={() => swiperRef.current?.slideNext()}
+              onClick={() => swiperRef3.current?.slideNext()}
               className="border border-primary rounded-full p-2 hover:bg-primary hover:shadow-xl"
             >
               <FaArrowLeft />
             </button>
             <button
-              onClick={() => swiperRef.current?.slidePrev()}
+              onClick={() => swiperRef3.current?.slidePrev()}
               className="border border-primary rounded-full p-2 hover:bg-primary hover:shadow-xl"
             >
               <FaArrowRight />
@@ -133,7 +134,7 @@ export default function Home() {
           className="w-full mx-auto"
           spaceBetween={20}
           autoplay={{
-            delay: 1000,
+            delay: 0,
             disableOnInteraction: false,
           }}
           loop={true}
@@ -150,7 +151,7 @@ export default function Home() {
               slidesPerView: 4,
             },
           }}
-          onSwiper={(swiper) => (swiperRef.current = swiper)}
+          onSwiper={(swiper) => (swiperRef3.current = swiper)}
         >
           {[...Array(5)].map((_, index) => (
             <SwiperSlide key={index}>
@@ -161,7 +162,7 @@ export default function Home() {
       </section>
 
       {/* service section */}
-      <section className="flex justify-around items-center py-20 flex-col-reverse  md:flex-row gap-8 ">
+      <section id="service" className="flex justify-around items-center py-20 flex-col-reverse  md:flex-row gap-8 ">
         <div className="lg:w-1/2 w-full flex justify-center ">
           <Image
             height={400}
@@ -197,12 +198,12 @@ export default function Home() {
         </div>
       </section>
       {/* Reguler menu section */}
-      <section>
+      <section id="manu" className="pt-16">
         <div className="flex justify-between relative items-center">
           <h1 className="text-4xl font-bold font-bubblegum lg:w-full md:text-center py-5 w-3/5">
             Our Reguler Menu Pack
           </h1>
-          <div className="md:hidden absolute top-0 right-0 z-50">
+          <div className="md:hidden absolute top-5 right-0 ">
             <button
               className="font-bubblegum border border-primary flex items-center justify-between gap-2 px-5 py-2 rounded-full hover:bg-primary w-full"
               onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -285,7 +286,7 @@ export default function Home() {
         </div>
       </section>
       {/* Reservation sectoion */}
-      <section className=" flex  flex-col md:flex-row justify-center items-center lg:gap-4 ">
+      <section id="reserve" className=" flex pt-16 flex-col md:flex-row justify-center items-center lg:gap-4 ">
         <div className="py-5 w-full md:w-1/2">
           <h1 className="text-5xl font-bubblegum text-bold">
             Do You Have Any Dinner Plan Today? Resrve Your Table Today
@@ -296,7 +297,7 @@ export default function Home() {
             Soluta iste labore ratione cumque necessitatibus.
           </p>
           <div className="flex  gap-5 pt-10">
-            <PrimaryButton name="Make Reservation" link="reserve" />
+            <PrimaryButton name="Make Reservation" link="#reserve" />
           </div>
         </div>
         <div className="py-10 flex justify-center">
@@ -310,18 +311,19 @@ export default function Home() {
         </div>
       </section>
       {/* our chef */}
-      <section className="py-5">
+      <section id="chef" className="pt-16">
         <div className="flex justify-between items-center py-10">
           <h1 className="text-4xl font-bold font-bubblegum">Meet Our Chefs</h1>
           <div className="lg:flex gap-4 hidden">
             <button
-              onClick={() => swiperRef.current?.slidePrev()}
+              
+              onClick={() => swiperRef1.current?.slideNext()}
               className="border border-primary rounded-full p-2 hover:bg-primary hover:shadow-xl"
             >
               <FaArrowLeft />
             </button>
             <button
-              onClick={() => swiperRef.current?.slideNext()}
+             onClick={() => swiperRef1.current?.slidePrev()}
               className="border border-primary rounded-full p-2 hover:bg-primary hover:shadow-xl"
             >
               <FaArrowRight />
@@ -350,7 +352,7 @@ export default function Home() {
               slidesPerView: 4,
             },
           }}
-          onSwiper={(swiper) => (swiperRef.current = swiper)}
+          onSwiper={(swiper) => (swiperRef1.current = swiper)}
         >
           {[...Array(5)].map((_, index) => (
             <SwiperSlide key={index}>
@@ -372,20 +374,21 @@ export default function Home() {
         </Swiper>
       </section>
       {/* Customer Say section */}
-      <section className="py-5">
+      <section id="reviews" className="pt-16">
         <div className="flex justify-between items-center py-10">
           <h1 className="text-4xl font-bold font-bubblegum">
             What Our Customer Sayes
           </h1>
           <div className="lg:flex  gap-4 hidden  ">
             <button
-              onClick={() => customerRef.current?.slidePrev()}
+             
+              onClick={() => swiperRef2.current?.slideNext()}
               className="border border-primary rounded-full p-2 hover:bg-primary hover:shadow-xl"
             >
               <FaArrowLeft />
             </button>
             <button
-              onClick={() => customerRef.current?.slideNext()}
+              onClick={() => swiperRef2.current?.slidePrev()}
               className="border border-primary rounded-full p-2 hover:bg-primary hover:shadow-xl"
             >
               <FaArrowRight />
@@ -401,7 +404,7 @@ export default function Home() {
             disableOnInteraction: false,
           }}
           loop={true}
-          speed={2000}
+          speed={4000}
           modules={[Autoplay]} // Include Navigation in modules
           breakpoints={{
             640: {
@@ -414,7 +417,7 @@ export default function Home() {
               slidesPerView: 3,
             },
           }}
-          onSwiper={(swiper) => (swiperRef.current = swiper)}
+          onSwiper={(swiper) => (swiperRef2.current = swiper)}
         >
           {[...Array(5)].map((_, index) => (
             <SwiperSlide key={index}>

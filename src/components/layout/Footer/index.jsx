@@ -11,7 +11,7 @@ import {
 
 const Foooter = () => {
   return (
-    <footer className="border-t-4 container-custom">
+    <footer className=" container-custom py-5">
       <div className="]  mt-5 ">
         <div className="flex justify-start items-center border-b-2 border-b-gray-400 pb-5 gap-4  mb-10 ">
           <div>

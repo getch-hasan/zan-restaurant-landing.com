@@ -7,11 +7,12 @@ const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const pathName = usePathname();
   const navList = [
-    { name: "About Us", href: "/about-us" },
-    { name: "Menu", href: "/menu" },
-    { name: "Reviews", href: "/reviews" },
-    { name: "Blog", href: "/blog" },
-    { name: "Contacts", href: "/contacts" },
+    // { name: "About Us", href: "#about-us" },
+    { name: "Manu", href: "#manu" },
+    { name: "Reviews", href: "#reviews" },
+    { name: "Chef", href: "#chef" },
+    // { name: "Contacts", href: "#contacts" },
+    { name: "Services", href: "#service" },
   ];
 
   const toggleDrawer = () => {
@@ -19,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="w-full z-10 bg-[#f8eded]">
+    <div className="w-full  fixed top-0 z-50 h-16 bg-[#f8eded]">
       <nav className="py-3 flex container-custom mx-auto justify-between items-center font-openSans">
         <Link href={'/'} className="flex items-center md:gap-4 gap-1 "> 
           <img
@@ -58,7 +59,7 @@ const Navbar = () => {
           ))}
           <Link
             aria-label="Reserve Table"
-            href="/reserve"
+            href="#reserve"
             className="font-semibold font-poppins text-md bg-primary py-2 rounded-full px-6"
           >
             Reserve Table
@@ -90,7 +91,7 @@ const Navbar = () => {
               onClick={toggleDrawer}
               className={`${
                 pathName === item.href
-                  ? "font-extrabold text-primary"
+                  ? "font-extrabold text-primary"   
                   : "text-black"
               } text-lg py-2`}
             >
