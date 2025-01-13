@@ -16,7 +16,6 @@ import Image from "next/image";
 import { serviceData } from "@/components/data";
 export default function Home() {
   const swiperRef = useRef(null);
-  const swiperRef3 = useRef(null);
   const swiperRef1 = useRef(null);
   const swiperRef2 = useRef(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -117,13 +116,13 @@ export default function Home() {
           <h1 className="text-4xl font-bold font-bubblegum">Popular Dishes</h1>
           <div className="lg:flex hidden gap-4">
             <button
-              onClick={() => swiperRef3.current?.slideNext()}
+              onClick={() => swiperRef.current?.slideNext()}
               className="border border-primary rounded-full p-2 hover:bg-primary hover:shadow-xl"
             >
               <FaArrowLeft />
             </button>
             <button
-              onClick={() => swiperRef3.current?.slidePrev()}
+              onClick={() => swiperRef.current?.slidePrev()}
               className="border border-primary rounded-full p-2 hover:bg-primary hover:shadow-xl"
             >
               <FaArrowRight />
@@ -134,11 +133,11 @@ export default function Home() {
           className="w-full mx-auto"
           spaceBetween={20}
           autoplay={{
-            delay: 0,
+            delay: 1000,
             disableOnInteraction: false,
           }}
           loop={true}
-          speed={2000}
+          speed={3000}
           modules={[Autoplay]} // Include Navigation in modules
           breakpoints={{
             640: {
@@ -151,7 +150,7 @@ export default function Home() {
               slidesPerView: 4,
             },
           }}
-          onSwiper={(swiper) => (swiperRef3.current = swiper)}
+          onSwiper={(swiper) => (swiperRef.current = swiper)}
         >
           {[...Array(5)].map((_, index) => (
             <SwiperSlide key={index}>
@@ -203,7 +202,7 @@ export default function Home() {
           <h1 className="text-4xl font-bold font-bubblegum lg:w-full md:text-center py-5 w-3/5">
             Our Reguler Menu Pack
           </h1>
-          <div className="md:hidden absolute top-5 right-0 ">
+          <div className="md:hidden absolute top-10 right-0 z-10 ">
             <button
               className="font-bubblegum border border-primary flex items-center justify-between gap-2 px-5 py-2 rounded-full hover:bg-primary w-full"
               onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -269,7 +268,7 @@ export default function Home() {
                 slidesPerView: 1,
               },
             }}
-            onSwiper={(swiper) => (swiperRef.current = swiper)}
+          
           >
             {[...Array(5)].map((_, index) => (
               <SwiperSlide key={index}>
