@@ -1,12 +1,16 @@
-import Foooter from "./Footer"
+import { useRouter } from "next/router";
+
 import Navbar from "./navbar"
+import Footer from "./Footer";
 
 export const LayoutPageWrapper = ({ children }) => {
+    const router = useRouter();
+    const hiddenRoutes = ["/menu-card"];
     return (
         <div>
-            <Navbar/>
+            {!hiddenRoutes.includes(router.pathname) && <Navbar />}
             <main>{children}</main>
-            <Foooter/>
+            {!hiddenRoutes.includes(router.pathname) && <Footer />}
         </div>
     )
 }
