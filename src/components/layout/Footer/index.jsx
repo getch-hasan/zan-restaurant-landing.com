@@ -9,7 +9,7 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 
-const Foooter = () => {
+const Footer = () => {
   return (
     <footer className=" container-custom py-5">
       <div className="]  mt-5 ">
@@ -175,4 +175,4 @@ const Foooter = () => {
   );
 };
 
-export default Foooter;
+export default Footer;
