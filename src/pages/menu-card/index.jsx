@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const menuItems = [
   { id: 1, name: "Caesar Selections", category: "Salads", price: "$8.95", description: "Lorem, deren, trataro, filede, nerada", image: "/images/burger.webp" },
@@ -67,7 +68,8 @@ export default function Menu() {
         {/* Menu Items */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {filteredItems.map((item, index) => (
-            <motion.div key={item.id} {...getAnimationProps(index)} transition={{ duration: 0.5, ease: "easeOut" }} className="flex items-center space-x-4">
+           <Link href={`/food-details/1`}>
+             <motion.div key={item.id} {...getAnimationProps(index)} transition={{ duration: 0.5, ease: "easeOut" }} className="flex items-center space-x-4">
               <div className="w-20 h-20 rounded-full overflow-hidden border-8 border-gray-800">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
               </div>
@@ -80,6 +82,7 @@ export default function Menu() {
                 <p className="text-gray-400 italic text-sm mt-1">{item.description}</p>
               </div>
             </motion.div>
+           </Link>
           ))}
         </div>
       </div>
