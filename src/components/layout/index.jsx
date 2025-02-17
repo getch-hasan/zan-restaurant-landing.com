@@ -5,12 +5,14 @@ import Footer from "./Footer";
 
 export const LayoutPageWrapper = ({ children }) => {
     const router = useRouter();
-    const hiddenRoutes = ["/menu-card"];
+    const hiddenRoutes = ["/menu-card", "/my-cart"];
+    const isHidden = hiddenRoutes.includes(router.pathname) || router.pathname.startsWith("/food-details/");
+
     return (
         <div>
-            {!hiddenRoutes.includes(router.pathname) && <Navbar />}
+            {!isHidden && <Navbar />}
             <main>{children}</main>
-            {!hiddenRoutes.includes(router.pathname) && <Footer />}
+            {!isHidden && <Footer />}
         </div>
-    )
+    );
 }

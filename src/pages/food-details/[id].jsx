@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import { FaStar, FaClock, FaPlus, FaMinus, FaCheck } from "react-icons/fa";
 
@@ -152,7 +153,15 @@ export default function FoodDetails() {
         <button onClick={addToCart} disabled={!selectedVariation} className={`w-full py-3 rounded-lg font-semibold text-lg transition ${selectedVariation ? "bg-black text-white hover:bg-primary" : "bg-gray-400 cursor-not-allowed"}`}>
           Add to Cart
         </button>
+        <Link href={'/my-cart'} className="w-full relative text-center bg-primary rounded-lg font-semibold text-lg py-3">View Cart
+        {cart?.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                  {cart?.length}
+                </span>
+              )} </Link>
+        
       </div>
+      
     </div>
   );
 }
