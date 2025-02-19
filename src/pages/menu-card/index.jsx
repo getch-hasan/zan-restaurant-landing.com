@@ -1,87 +1,57 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-
-const menuItems = [
-  {
-    id: 1,
-    name: "Caesar Selections",
-    category: "Salads",
-    price: "$8.95",
-    description: "Lorem, deren, trataro, filede, nerada",
-    image: "/images/burger.webp",
-  },
-  {
-    id: 2,
-    name: "Greek Salad",
-    category: "Starters",
-    price: "$9.95",
-    description: "Fresh spinach, crisp romaine, tomatoes, and Greek olives",
-    image: "/images/burger.webp",
-  },
-  {
-    id: 3,
-    name: "Spinach Salad",
-    category: "Salads",
-    price: "$9.95",
-    description:
-      "Fresh spinach with mushrooms, hard boiled egg, and warm bacon vinaigrette",
-    image: "/images/burger.webp",
-  },
-  {
-    id: 4,
-    name: "Spinach Salad",
-    category: "Specialty",
-    price: "$9.95",
-    description:
-      "Fresh spinach with mushrooms, hard boiled egg, and warm bacon vinaigrette",
-    image: "/images/burger.webp",
-  },
-  {
-    id: 5,
-    name: "Spinach Salad",
-    category: "Starters",
-    price: "$9.95",
-    description:
-      "Fresh spinach with mushrooms, hard boiled egg, and warm bacon vinaigrette",
-    image: "/images/burger.webp",
-  },
-  {
-    id: 6,
-    name: "Spinach Salad",
-    category: "Specialty",
-    price: "$9.95",
-    description:
-      "Fresh spinach with mushrooms, hard boiled egg, and warm bacon vinaigrette",
-    image: "/images/burger.webp",
-  },
-  {
-    id: 7,
-    name: "Spinach Salad",
-    category: "Salads",
-    price: "$9.95",
-    description:
-      "Fresh spinach with mushrooms, hard boiled egg, and warm bacon vinaigrette",
-    image: "/images/burger.webp",
-  },
-];
-
-const categories = ["All", "Starters", "Salads", "Specialty"];
+import { publicRequest } from "@/config/axios.config";
+import Image from "next/image";
 
 export default function Menu() {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [animationType, setAnimationType] = useState(1); // Store single animation type for all items
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [food, setFood] = useState([]);
+  const [animationType, setAnimationType] = useState(1);
+  const [cart, setCart] = useState([]);
 
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
-    setAnimationType(Math.floor(Math.random() * 3) + 1); // 1, 2, or 3
+  // Fetch Categories
+  const fetchCategories = useCallback(async () => {
+    try {
+      const res = await publicRequest.get("category");
+      if (res.status === 200) {
+        setCategories(res?.data?.data);
+        console.log(res?.data?.data);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  }, []);
+
+  // Fetch All Food Items
+  const fetchFood = useCallback(async () => {
+    try {
+      const res = await publicRequest.get("cook");
+      if (res.status === 200) {
+        setFood(res?.data?.data?.data);
+      }
+    } catch (error) {
+      console.error("Error fetching food items:", error);
+    }
+  }, []);
+
+  // Fetch Food by Category
+  const handleCategoryChange = async (id) => {
+    try {
+      const res = await publicRequest.get(`category/${id}`);
+      if (res.status === 200) {
+        setFood(res?.data?.data?.cooks || []);
+        console.log("Filtered Food Items:", res?.data?.data?.cooks);
+      }
+    } catch (error) {
+      console.error("Error fetching category:", error);
+    }
+    setSelectedCategory(id);
+    setAnimationType(Math.floor(Math.random() * 3) + 1);
   };
 
-  const filteredItems =
-    selectedCategory === "All"
-      ? menuItems
-      : menuItems.filter((item) => item.category === selectedCategory);
-
+  // Animation Config
   const getAnimationProps = (index) => {
     switch (animationType) {
       case 2: // Slide-in
@@ -107,19 +77,20 @@ export default function Menu() {
         };
     }
   };
-   const [cart, setCart] = useState([]);
- 
-   useEffect(() => {
-     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-     setCart(storedCart);
-   }, []);
+
+  useEffect(() => {
+    fetchCategories();
+    fetchFood();
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCart(storedCart);
+  }, []);
 
   return (
     <main className="bg-gray-900 min-h-screen">
       <div className="text-white container-custom py-10">
         {/* Header */}
         <div className="flex flex-col">
-          <div className="flex justify-between ">
+          <div className="flex justify-between">
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-400 uppercase tracking-widest">
                 Menu
@@ -145,34 +116,47 @@ export default function Menu() {
 
         {/* Category Buttons */}
         <div className="flex flex-wrap justify-center gap-3 md:gap-6 text-lg mb-6">
-          {categories.map((category) => (
+          {/* "All" Button */}
+          <button
+            className={`px-4 py-2 md:px-6 md:py-3 rounded-lg transition duration-300 ${
+              !selectedCategory ? "text-yellow-500" : "text-gray-300"
+            }`}
+            onClick={() => {
+              setSelectedCategory(null);
+              fetchFood(); // Fetch all food items
+            }}
+          >
+            All
+          </button>
+
+          {/* Category-Specific Buttons */}
+          {categories?.map((category, index) => (
             <button
-              key={category}
+              key={index}
               className={`px-4 py-2 md:px-6 md:py-3 rounded-lg transition duration-300 ${
-                selectedCategory === category
-                  ? "text-yellow-500 "
-                  : "text-gray-300"
+                selectedCategory === category?.category_id ? "text-yellow-500" : "text-gray-300"
               }`}
-              onClick={() => handleCategoryChange(category)}
+              onClick={() => handleCategoryChange(category?.category_id)}
             >
-              {category}
+              {category?.category_name}
             </button>
           ))}
         </div>
 
         {/* Menu Items */}
         <div className="grid grid-cols-1 overflow-hidden md:grid-cols-2 gap-8">
-          {filteredItems.map((item, index) => (
-            <Link href={`/food-details/1`}>
+          {food?.map((item, index) => (
+            <Link href={`/food-details/${item?.cook_id}`} key={item?.cook_id}>
               <motion.div
-                key={item.id}
                 {...getAnimationProps(index)}
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="flex items-center space-x-4"
               >
                 <div className="w-20 h-20 rounded-full overflow-hidden border-8 border-gray-800">
-                  <img
-                    src={item.image}
+                  <Image
+                    height={50}
+                    width={50}
+                    src={`${process.env.NEXT_PUBLIC_API_SERVER}${item?.cook_image}`}
                     alt={item.name}
                     className="w-full h-full object-cover"
                   />
@@ -180,11 +164,11 @@ export default function Menu() {
                 <div className="flex-1 border-gray-800 pb-2">
                   <div className="flex justify-between items-center">
                     <p className="bg-gray-800 text-white font-bold px-2 text-nowrap py-1">
-                      {item.name}
+                      {item?.cook_name}
                     </p>
                     <div className="border-b border-dashed border-gray-400 w-full"></div>
                     <span className="bg-gray-800 text-yellow-500 font-bold px-2 py-1">
-                      {item.price}
+                      {item?.price}
                     </span>
                   </div>
                   <p className="text-gray-400 italic text-sm mt-1">

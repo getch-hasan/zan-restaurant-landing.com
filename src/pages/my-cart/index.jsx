@@ -25,8 +25,11 @@ export default function MyCart() {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const removeFromCart = (id) => {
-    const updatedCart = cart?.filter((item) => item?.id !== id);
+  const removeFromCart = (id,variation) => {
+    console.log(id,variation)
+    const updatedCart = cart?.filter(
+      (item) => !(item?.id === id && item?.variation?.variant_id === variation)
+    );
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
@@ -67,13 +70,13 @@ export default function MyCart() {
                     <h3 className="font-semibold text-lg text-gray-900">{item?.name}</h3>
                     <p className="text-sm text-gray-600">
                       Variation:{" "}
-                      <span className="font-medium text-gray-800">{item?.variation}</span>
+                      <span className="font-medium text-gray-800">{item?.variation?.variant_name}</span>
                     </p>
                     {item?.extras?.length > 0 && (
                       <p className="text-sm text-gray-500">
                         Extras:{" "}
                         <span className="text-gray-700">
-                          {item.extras.map((extra) => extra?.name).join(", ")}
+                          {item.extras.map((extra) => extra?.cook_name).join(", ")}
                         </span>
                       </p>
                     )}
@@ -103,7 +106,7 @@ export default function MyCart() {
                     </button>
                   </div>
                   <button
-                    onClick={() => removeFromCart(item?.id)}
+                    onClick={() => removeFromCart(item?.id,item?.variation?.variant_id)}
                     className="text-red-600 hover:text-red-800 transition bg-red-100 hover:bg-red-200 p-2 rounded-lg"
                   >
                     <FaTrash size={18} />
