@@ -33,7 +33,7 @@ const [categoryloading,SetcategoryLoading]=useState(false)
   const fetchFood = useCallback(async () => {
     SetcategoryLoading(true)
     try {
-      const res = await publicRequest.get("cook");
+      const res = await publicRequest.get("/cook");
       if (res.status === 200) {
         setFood(res?.data?.data?.data);
         SetcategoryLoading(false)
