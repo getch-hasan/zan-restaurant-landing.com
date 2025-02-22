@@ -101,4 +101,33 @@ return (
 )
   }
  
+  import { FaStar, FaStarHalfAlt } from "react-icons/fa";
+
+  export default function FoodCardSkeleton() {
+    return (
+      <div className="w-full h-fit rounded-lg bg-gray-200 animate-pulse flex flex-col justify-between">
+        <div className="overflow-hidden w-full rounded-t-[15px] bg-gray-300 h-40"></div>
+        
+        <div className="p-5">
+          <div className="text-center">
+            <div className="h-6 w-3/4 mx-auto bg-gray-300 rounded-md"></div>
+            
+            {/* Ratings Skeleton */}
+            <div className="flex justify-center py-2 space-x-1">
+              {[...Array(5)].map((_, index) => (
+                <FaStar key={index} className="text-gray-400" />
+              ))}
+            </div>
+            
+            <div className="h-4 w-full bg-gray-300 rounded-md my-2"></div>
+          </div>
+          
+          <div className="flex justify-between items-center mt-5">
+            <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
+            <div className="h-8 w-24 bg-gray-300 rounded-full"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   
