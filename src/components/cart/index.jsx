@@ -15,7 +15,7 @@ const Cart = ({handleModal,food}) => {
           height={400}
           width={300}
           className="w-full object-cover h-40 transition-transform duration-500 hover:scale-125"
-          src={`${process.env.NEXT_PUBLIC_API_SERVER}${food?.cook_image}`}
+          src={`${process.env.NEXT_PUBLIC_API_SERVER}/${food?.cook_image}`}
           alt=""
         />
       </div>

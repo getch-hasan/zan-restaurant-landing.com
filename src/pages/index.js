@@ -25,7 +25,7 @@ export default function Home() {
   const [modal, setModal] = useState(false);
   const images = ['/images/burger.webp', '/images/food.webp', '/images/drink.webp', '/images/dessert.webp'];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
@@ -34,10 +34,7 @@ export default function Home() {
     setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
   };
 
-  const handleSelect = (item) => {
-    setSelectedItem(item);
-    setDropdownOpen(false); // Close dropdown after selection
-  };
+ 
   const handleModal = () => {
     setModal(!modal);
     console.table(modal);
@@ -65,6 +62,7 @@ const fetchFood=useCallback(async()=>{
     const res=await publicRequest.get('cook')
   if(res.status===200){
     SetFood(res?.data?.data?.data)
+    setRegulerFood(res?.data?.data?.data)
   
   }
   } catch (error) {
@@ -88,8 +86,25 @@ useEffect(()=>{
   fetchCategories()
   fetchFood()
   fetchChefs()
+  
 },[])
+ // Fetch Food by Category
+ const [regulerFood,setRegulerFood]=useState([])
+ const handleCategoryChange = async (id) => {
+  try {
+    const res = await publicRequest.get(`category/${id}`);
+    if (res.status === 200) {
+      setRegulerFood(res?.data?.data?.cooks || []);
+      console.log(res?.data?.data?.cooks)
+      console.log("Filtered Food Items:", res?.data?.data?.cooks);
+    }
+  } catch (error) {
+    console.error("Error fetching category:", error);
+  }
+  setSelectedCategory(id);
+  setDropdownOpen(false);
 
+};
   return (
     <div className="container-custom mx-auto pt-16">
       {/* hero section */}
@@ -120,42 +135,45 @@ useEffect(()=>{
             alt="hero"
           />
 
-          <div className="absolute lg:top-1/2 lg:right-16 right-0 transform lg:-translate-y-1/2 lg:translate-x-20 h-64 lg:h-96 flex flex-col gap-2 overflow-hidden">
-            <Swiper
-              spaceBetween={10}
-              direction="vertical"
-              autoplay={{
-                delay: 1000,
-                disableOnInteraction: false,
-              }}
-              loop={true}
-              speed={2000}
-              modules={[Autoplay]}
-              breakpoints={{
-                0: {
-                  slidesPerView: 4, // Small devices
-                },
-                640: {
-                  slidesPerView: 5, // Larger devices
-                },
-              }}
-            >
-              {categories?.map((category) => (
-                <SwiperSlide>
-                  <Link href={''} className="flex rounded-full gap-1 items-center bg-white hover:bg-primary shadow-xl px-3 py-1">
-                    <Image
-                      className="rounded-full"
-                      height={50}
-                      width={50}
-                      src={`/${process.env.NEXT_PUBLIC_API_SERVER}/${category?.category_image}`}
-                      alt="Dish"
-                    />
-                    <span className="text-nowrap">{category?.category_name}</span>
-                  </Link>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+{/* <div className="absolute lg:top-1/2 lg:right-16 right-0 transform lg:-translate-y-1/2 lg:translate-x-20 h-64 lg:h-96 flex flex-col gap-2 overflow-hidden">
+  <Swiper
+    spaceBetween={10}
+    direction="vertical"
+    autoplay={{
+      delay: 1000,
+      disableOnInteraction: false,
+    }}
+    loop={true}
+    speed={2000}
+    modules={[Autoplay]}
+    breakpoints={{
+      0: { slidesPerView: 4 }, // Small devices
+      640: { slidesPerView: 5 }, // Larger devices
+    }}
+  >
+    {categories?.length > 0 ? (
+      categories.map((category, index) => (
+        <SwiperSlide key={category?.category_id || index}>
+          <Link
+            href={""}
+            className="flex rounded-full gap-1 items-center bg-white hover:bg-primary shadow-xl px-3 py-1"
+          >
+            <Image
+              className="rounded-full"
+              height={50}
+              width={50}
+              src={`/${process.env.NEXT_PUBLIC_API_SERVER}/${category?.category_image}`}
+              alt={category?.category_name || "Category"}
+            />
+            <span className="whitespace-nowrap">{category?.category_name}</span>
+          </Link>
+        </SwiperSlide>
+      ))
+    ) : (
+      <p className="text-gray-500 text-sm">No categories available</p>
+    )}
+  </Swiper>
+</div> */}
         </div>
       </section>
       {/* Populer dishesh seciton start from hare */}
@@ -267,19 +285,19 @@ useEffect(()=>{
                 role="listbox"
                 aria-activedescendant={selectedItem}
               >
-                {[...Array(8)].map((_, index) => {
-                  const itemText = `Item ${index + 1}`;
+                {categories?.map((category, index) => {
+                  
                   return (
                     <button
                       key={index}
                       className={`block w-full text-left font-bubblegum border-b last:border-none border-gray-300 px-5 py-2 hover:bg-primary ${
-                        selectedItem === itemText ? "bg-primary text-white" : ""
+                        selectedCategory === category?.category_id ? "bg-primary text-white" : ""
                       }`}
                       role="option"
-                      aria-selected={selectedItem === itemText}
-                      onClick={() => handleSelect(itemText)}
+                      aria-selected={selectedCategory === category?.category_id}
+                      onClick={() => handleCategoryChange(category?.category_id)}
                     >
-                      {itemText}
+                      {category?.category_name}
                     </button>
                   );
                 })}
@@ -291,13 +309,13 @@ useEffect(()=>{
           {/* Dropdown button for small screens */}
 
           {/* Regular buttons for larger screens */}
-          <div className="hidden md:flex justify-between ">
-            {[...Array(8)].map((_, index) => (
-              <button
-                key={index}
-                className="font-bubblegum border border-primary px-5 py-2 rounded-full hover:bg-primary"
+          <div className="hidden md:flex justify-center gap-2 ">
+            {categories?.map((category, index) => (
+              <button onClick={()=>handleCategoryChange(category?.category_id)}
+                key={category?.category_id}
+                className={`font-bubblegum border border-primary px-5 py-2 rounded-full hover:bg-primary ${selectedCategory==category?.category_id? "bg-primary": ""}`}
               >
-                Item {index + 1}
+               {category?.category_name }
               </button>
             ))}
           </div>
@@ -320,7 +338,7 @@ useEffect(()=>{
             }}
           
           >
-            {food?.map((data, index) => (
+            {regulerFood?.map((data, index) => (
               <SwiperSlide key={index}>
                 <Cart handleModal={handleModal} food={data} />
               </SwiperSlide>
@@ -328,8 +346,8 @@ useEffect(()=>{
           </Swiper>
         </div>
 
-        <div className=" hidden md:grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
-          {food.map((data) => (
+        <div className=" hidden md:grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5">
+          {regulerFood?.slice(0,10)?.map((data) => (
             <Cart key={data?.cook_id} handleModal={handleModal} food={data}/>
           ))}
         </div>
@@ -410,7 +428,7 @@ useEffect(()=>{
                   <Image
                     height={500}
                     width={300}
-                    src={`${process.env.NEXT_PUBLIC_API_SERVER}${data?.chef_image}`}
+                    src={`${process.env.NEXT_PUBLIC_API_SERVER}/${data?.chef_image}`}
                     className="rounded-xl"
                   />
                 </div>

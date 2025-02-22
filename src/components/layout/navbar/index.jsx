@@ -7,8 +7,9 @@ const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const pathName = usePathname();
   const navList = [
-    // { name: "About Us", href: "#about-us" },
-    { name: "Manu", href: "#manu" },
+    // { name: "About Us", href: "/menu-card" },
+    { name: "Manu-card", href: "/menu-card" },
+    { name: "Menu", href: "#manu" },
     { name: "Reviews", href: "#reviews" },
     { name: "Chef", href: "#chef" },
     // { name: "Contacts", href: "#contacts" },
@@ -20,7 +21,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="w-full  fixed top-0 z-50 h-16 bg-[#f8eded]">
+    <div className="w-full  fixed top-0 z-50  bg-[#f8eded]">
       <nav className="py-3 flex container-custom mx-auto justify-between items-center font-openSans">
         <Link href={'/'} className="flex items-center md:gap-4 gap-1 "> 
           <img
