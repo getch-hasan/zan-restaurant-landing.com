@@ -10,10 +10,12 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules"; // Import Navigation from 'swiper/modules'
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { PrimaryButton } from "@/components/button";
 import Image from "next/image";
 import { serviceData } from "@/components/data";
+import { publicRequest } from "@/config/axios.config";
+import Link from "next/link";
 export default function Home() {
   const swiperRef = useRef(null);
   const swiperRef1 = useRef(null);
@@ -23,7 +25,6 @@ export default function Home() {
   const [modal, setModal] = useState(false);
   const images = ['/images/burger.webp', '/images/food.webp', '/images/drink.webp', '/images/dessert.webp'];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
 
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -42,6 +43,53 @@ export default function Home() {
     console.table(modal);
     console.log("clicked");
   };
+
+  // Fetch Category======================================
+const [categories,setCategories]=useState([])
+const fetchCategories=useCallback(async()=>{
+  try {
+    const res=await publicRequest.get('category')
+  if(res.status===200){
+    setCategories(res?.data?.data)
+    console.log(res?.data?.data)
+  }
+  } catch (error) {
+    
+  }
+} ,[])
+
+// Fetch Product=====================================================
+const [food,SetFood]=useState([])
+const fetchFood=useCallback(async()=>{
+  try {
+    const res=await publicRequest.get('cook')
+  if(res.status===200){
+    SetFood(res?.data?.data?.data)
+  
+  }
+  } catch (error) {
+    
+  }
+}, [])
+// Fetch Chef=======================================================
+const [chefs,SetChefs]=useState([])
+const fetchChefs=useCallback(async()=>{
+  try {
+    const res=await publicRequest.get('chef')
+  if(res.status===200){
+    SetChefs(res?.data?.data)
+    console.log('=======',res?.data?.data)
+  }
+  } catch (error) {
+    
+  }
+}, [])
+useEffect(()=>{
+  fetchCategories()
+  fetchFood()
+  fetchChefs()
+},[])
+
   return (
     <div className="container-custom mx-auto pt-16">
       {/* hero section */}
@@ -92,18 +140,18 @@ export default function Home() {
                 },
               }}
             >
-              {[...Array(6)].map((_, index) => (
-                <SwiperSlide key={index}>
-                  <button className="flex rounded-full gap-1 items-center bg-white hover:bg-primary shadow-xl px-3 py-1">
+              {categories?.map((category) => (
+                <SwiperSlide>
+                  <Link href={''} className="flex rounded-full gap-1 items-center bg-white hover:bg-primary shadow-xl px-3 py-1">
                     <Image
                       className="rounded-full"
                       height={50}
                       width={50}
-                      src="/images/burger.webp"
+                      src={`/${process.env.NEXT_PUBLIC_API_SERVER}/${category?.category_image}`}
                       alt="Dish"
                     />
-                    <span className="inline-block">Dishes</span>
-                  </button>
+                    <span className="text-nowrap">{category?.category_name}</span>
+                  </Link>
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -152,11 +200,13 @@ export default function Home() {
           }}
           onSwiper={(swiper) => (swiperRef.current = swiper)}
         >
-          {[...Array(5)].map((_, index) => (
+         <div>
+         {food?.map((item, index) => (
             <SwiperSlide key={index}>
-              <Cart handleModal={handleModal} />
+              <Cart handleModal={handleModal} food={item} />
             </SwiperSlide>
           ))}
+         </div>
         </Swiper>
       </section>
 
@@ -270,17 +320,17 @@ export default function Home() {
             }}
           
           >
-            {[...Array(5)].map((_, index) => (
+            {food?.map((data, index) => (
               <SwiperSlide key={index}>
-                <Cart handleModal={handleModal} />
+                <Cart handleModal={handleModal} food={data} />
               </SwiperSlide>
             ))}
           </Swiper>
         </div>
 
         <div className=" hidden md:grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
-          {[...Array(8)].map((_, index) => (
-            <Cart key={index} handleModal={handleModal} />
+          {food.map((data) => (
+            <Cart key={data?.cook_id} handleModal={handleModal} food={data}/>
           ))}
         </div>
       </section>
@@ -353,19 +403,19 @@ export default function Home() {
           }}
           onSwiper={(swiper) => (swiperRef1.current = swiper)}
         >
-          {[...Array(5)].map((_, index) => (
-            <SwiperSlide key={index}>
+          {chefs?.map((data) => (
+            <SwiperSlide key={data.chef_id}>
               <div className=" bg-white rounded-xl p-5">
                 <div className="flex justify-center items-center ">
                   <Image
                     height={500}
                     width={300}
-                    src={"/images/chef.webp"}
+                    src={`${process.env.NEXT_PUBLIC_API_SERVER}${data?.chef_image}`}
                     className="rounded-xl"
                   />
                 </div>
                 <p className="text-center  font-bubblegum leading-5 text-xl mt-4">
-                  MR. Chef
+                  {data?.title}
                 </p>
               </div>
             </SwiperSlide>
