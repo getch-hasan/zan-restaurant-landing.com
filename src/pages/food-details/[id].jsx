@@ -1,3 +1,4 @@
+import { FoodDetailSkeleton } from "@/components/skeleton";
 import { Toastify } from "@/components/tostify";
 import { publicRequest } from "@/config/axios.config";
 import Image from "next/image";
@@ -15,28 +16,36 @@ export default function FoodDetails() {
   const router = useRouter();
   const { id } = router.query;
   const [food, setFood] = useState({});
+  const [loading,setLoading]=useState(false)
   console.log(food?.childs);
   const fetchCook = useCallback(async () => {
-    console.log(id);
+ 
+  
+    setLoading(true); // Start loading
+  
     try {
       const res = await publicRequest(`cook/${id}`);
+  
       if (res.status === 200) {
         console.log(res?.data?.data);
         setFood(res?.data?.data);
       }
-    } catch (error) {}
-  });
+    } catch (error) {
+      console.error("Error fetching cook data:", error);
+    } finally {
+      setLoading(false); // Ensure loading state is updated
+    }
+  }, [id, setFood, setLoading]); // Add dependencies
 
   useEffect(() => {
-    fetchCook();
+    if(id){
+      fetchCook();
+    }
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCart(storedCart);
-  }, []);
+  }, [id]);
 
-  const variations = [
-    { id: "small", label: "Small", price: 480 },
-    { id: "medium", label: "Medium", price: 960 },
-  ];
+  
   const toggleExtra = (id) => {
     setSelectedExtras((prev) => ({
       ...prev,
@@ -51,10 +60,10 @@ export default function FoodDetails() {
   };
 
   const addToCart = () => {
-    if (!selectedVariation) return;
+    // if (!selectedVariation) return;
 
     const selectedExtrasArray = food?.childs.filter(
-      (item) => selectedExtras[item.cook_id]
+      (item) => selectedExtras[item?.cook_id]
     );
 
     const newCartItem = {
@@ -64,15 +73,15 @@ export default function FoodDetails() {
       quantity,
       extras: selectedExtrasArray,
       totalPrice:
-      (selectedVariation?.variant_price || 0) +
-      selectedExtrasArray.reduce((sum, item) => sum + item.price, 0),
+      (selectedVariation?.variant_price || food?.price) +
+      selectedExtrasArray?.reduce((sum, item) => sum + item?.price, 0),
     
     };
 
     // Check if the item already exists in the cart (same ID & variation)
-    const existingItemIndex = cart.find(
+    const existingItemIndex = cart?.find(
       (item) =>
-        item.id === newCartItem?.id && item.variation === newCartItem.variation
+        item.id === newCartItem?.id && item.variation === newCartItem?.variation
     );
 
     if (existingItemIndex) {
@@ -85,7 +94,9 @@ export default function FoodDetails() {
       localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
   };
-
+if(loading){
+  return <FoodDetailSkeleton/>
+}
   return (
     <div className="container-custom mt-16 p-6 rounded-2xl  border-2  w-full max-w-4xl transition-all duration-300">
       {/* Desktop Layout: Two-column design */}
@@ -95,7 +106,7 @@ export default function FoodDetails() {
           <Image
             height={500}
             width={1000}
-            src={`${process.env.NEXT_PUBLIC_API_SERVER}${food?.cook_image}`}
+            src={`${process.env.NEXT_PUBLIC_API_SERVER}/${food?.cook_image}`}
             alt="Italian hot pizza"
             className="w-full h-64 md:h-80 object-cover rounded-xl shadow-md"
           />
@@ -123,9 +134,11 @@ export default function FoodDetails() {
           <p className="text-sm text-gray-500 mt-3 leading-relaxed">
             {food?.about_cook}
           </p>
+          <p className="text-xl font-semibold mt-3 text-gray-900">Price: <span className="text-primary">{food?.price}tk</span> </p>
 
           {/* Variation Selection */}
-          <div className="bg-gray-100 p-5 rounded-lg mt-6">
+          {
+            food?.variants?.length>0 && <div className="bg-gray-100 p-5 rounded-lg mt-6">
             <div className="flex items-center justify-between mb-3">
               <p className="text-lg font-semibold text-gray-900">Variation</p>
               <span
@@ -166,6 +179,7 @@ export default function FoodDetails() {
               ))}
             </div>
           </div>
+          }
         </div>
       </div>
 
@@ -235,11 +249,11 @@ export default function FoodDetails() {
         {/* Add to Cart */}
         <button
           onClick={addToCart}
-          disabled={!selectedVariation}
+          // disabled={!selectedVariation}
           className={`w-full py-3 rounded-lg font-semibold text-lg transition ${
             selectedVariation
               ? "bg-black text-white hover:bg-primary"
-              : "bg-gray-400 cursor-not-allowed"
+              : "bg-gray-400 "
           }`}
         >
           Add to Cart

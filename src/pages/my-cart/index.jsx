@@ -68,10 +68,12 @@ export default function MyCart() {
                   </div>
                   <div className="text-center md:text-start">
                     <h3 className="font-semibold text-lg text-gray-900">{item?.name}</h3>
-                    <p className="text-sm text-gray-600">
+                    {
+                      item?.variation && <p className="text-sm text-gray-600">
                       Variation:{" "}
                       <span className="font-medium text-gray-800">{item?.variation?.variant_name}</span>
                     </p>
+                    }
                     {item?.extras?.length > 0 && (
                       <p className="text-sm text-gray-500">
                         Extras:{" "}

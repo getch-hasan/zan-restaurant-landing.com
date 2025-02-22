@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { publicRequest } from "@/config/axios.config";
 import Image from "next/image";
+import { CategorySlekeloton, MenuSkeleton } from "@/components/skeleton";
+import { MdOutlineFoodBank } from "react-icons/md";
 
 export default function Menu() {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -10,14 +12,17 @@ export default function Menu() {
   const [food, setFood] = useState([]);
   const [animationType, setAnimationType] = useState(1);
   const [cart, setCart] = useState([]);
-
+const [loading,setLoading]=useState(false)
+const [categoryloading,SetcategoryLoading]=useState(false)
   // Fetch Categories
   const fetchCategories = useCallback(async () => {
+    setLoading(true)
     try {
       const res = await publicRequest.get("category");
       if (res.status === 200) {
         setCategories(res?.data?.data);
-        console.log(res?.data?.data);
+        // console.log(res?.data?.data);
+        setLoading(false)
       }
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -26,10 +31,12 @@ export default function Menu() {
 
   // Fetch All Food Items
   const fetchFood = useCallback(async () => {
+    SetcategoryLoading(true)
     try {
       const res = await publicRequest.get("cook");
       if (res.status === 200) {
         setFood(res?.data?.data?.data);
+        SetcategoryLoading(false)
       }
     } catch (error) {
       console.error("Error fetching food items:", error);
@@ -38,11 +45,13 @@ export default function Menu() {
 
   // Fetch Food by Category
   const handleCategoryChange = async (id) => {
+    setLoading(true)
     try {
       const res = await publicRequest.get(`category/${id}`);
       if (res.status === 200) {
         setFood(res?.data?.data?.cooks || []);
         console.log("Filtered Food Items:", res?.data?.data?.cooks);
+        setLoading(false)
       }
     } catch (error) {
       console.error("Error fetching category:", error);
@@ -99,11 +108,11 @@ export default function Menu() {
             </div>
             <Link
               href={"/my-cart"}
-              className="relative bg-primary px-5 py-1 rounded-lg text-xl font-bold"
+              className="relative text-primary px-5 py-1 rounded-lg text-xl font-bold"
             >
-              Cart
+             <MdOutlineFoodBank className="h-12 w-12"/>
               {cart?.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                <span className="absolute top-1 right-1 bg-red-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
                   {cart?.length}
                 </span>
               )}
@@ -115,36 +124,39 @@ export default function Menu() {
         </div>
 
         {/* Category Buttons */}
-        <div className="flex flex-wrap justify-center gap-3 md:gap-6 text-lg mb-6">
-          {/* "All" Button */}
-          <button
-            className={`px-4 py-2 md:px-6 md:py-3 rounded-lg transition duration-300 ${
-              !selectedCategory ? "text-yellow-500" : "text-gray-300"
-            }`}
-            onClick={() => {
-              setSelectedCategory(null);
-              fetchFood(); // Fetch all food items
-            }}
-          >
-            All
-          </button>
+    {
+      categoryloading ? <CategorySlekeloton/> :     <div className="flex flex-wrap justify-center gap-3 md:gap-6 text-lg mb-6">
+      {/* "All" Button */}
+      <button
+        className={`px-4 py-2 md:px-6 md:py-3 rounded-lg transition duration-300 ${
+          !selectedCategory ? "text-yellow-500" : "text-gray-300"
+        }`}
+        onClick={() => {
+          setSelectedCategory(null);
+          fetchFood(); // Fetch all food items
+        }}
+      >
+        All
+      </button>
 
-          {/* Category-Specific Buttons */}
-          {categories?.map((category, index) => (
-            <button
-              key={index}
-              className={`px-4 py-2 md:px-6 md:py-3 rounded-lg transition duration-300 ${
-                selectedCategory === category?.category_id ? "text-yellow-500" : "text-gray-300"
-              }`}
-              onClick={() => handleCategoryChange(category?.category_id)}
-            >
-              {category?.category_name}
-            </button>
-          ))}
-        </div>
+      {/* Category-Specific Buttons */}
+      {categories?.map((category, index) => (
+        <button
+          key={index}
+          className={`px-4 py-2 md:px-6 md:py-3 rounded-lg transition duration-300 ${
+            selectedCategory === category?.category_id ? "text-yellow-500" : "text-gray-300"
+          }`}
+          onClick={() => handleCategoryChange(category?.category_id)}
+        >
+          {category?.category_name}
+        </button>
+      ))}
+    </div>
+    }
 
         {/* Menu Items */}
-        <div className="grid grid-cols-1 overflow-hidden md:grid-cols-2 gap-8">
+        {
+          loading? <MenuSkeleton/> :<div className="grid grid-cols-1 overflow-hidden md:grid-cols-2 gap-8">
           {food?.map((item, index) => (
             <Link href={`/food-details/${item?.cook_id}`} key={item?.cook_id}>
               <motion.div
@@ -156,7 +168,7 @@ export default function Menu() {
                   <Image
                     height={50}
                     width={50}
-                    src={`${process.env.NEXT_PUBLIC_API_SERVER}${item?.cook_image}`}
+                    src={`${process.env.NEXT_PUBLIC_API_SERVER}/${item?.cook_image}`}
                     alt={item.name}
                     className="w-full h-full object-cover"
                   />
@@ -179,6 +191,7 @@ export default function Menu() {
             </Link>
           ))}
         </div>
+        }
       </div>
     </main>
   );
